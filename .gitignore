@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.db
+debug.log
+transcripts_cache/
+.streamlit/

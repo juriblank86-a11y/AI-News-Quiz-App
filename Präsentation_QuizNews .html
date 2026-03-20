@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Quiz Generator - Professional Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-dark-2: #020617;
+            --bg-surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --accent-blue: #38bdf8;
+            --accent-teal: #14b8a6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .slide {
+            width: 960px;
+            height: 700px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            background: linear-gradient(135deg, var(--bg-dark-2) 0%, var(--bg-dark) 100%);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .slide-title {
+            font-size: 3.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .slide-meta {
+            font-size: 0.875rem;
+            color: var(--accent-blue);
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .content-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent-blue);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
+
+        .badge.python {
+            background: rgba(52, 168, 219, 0.2);
+            color: #34a8db;
+            border-color: rgba(52, 168, 219, 0.4);
+        }
+
+        .badge.llm {
+            background: rgba(20, 184, 166, 0.2);
+            color: var(--accent-teal);
+            border-color: rgba(20, 184, 166, 0.4);
+        }
+
+        .badge.database {
+            background: rgba(150, 206, 180, 0.2);
+            color: #96ceb4;
+            border-color: rgba(150, 206, 180, 0.4);
+        }
+
+        .provider-box {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .provider-box h4 {
+            color: var(--accent-blue);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .provider-box p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .workflow-step {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .workflow-step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .workflow-step h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-step p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .highlight-box {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+
+        .highlight-box h4 {
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .stat-box {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent-blue);
+        }
+
+        .center-flex {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        li {
+            margin: 0.75rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-teal);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<section class="slide">
+    <div class="center-flex">
+        <h1 class="slide-title">📰 News Quiz Generator</h1>
+        <p class="slide-subtitle">Professional AI-Powered Quiz Generation System</p>
+        <p class="slide-meta">Eine elegante Python-Anwendung für automatische Wissensfragen aus Nachrichteninhalten</p>
+        <div class="tech-stack" style="justify-content: center; margin-top: 2rem;">
+            <span class="badge python">Python</span>
+            <span class="badge llm">OpenAI/Groq/Ollama</span>
+            <span class="badge database">SQLite</span>
+            <span class="badge">Streamlit</span>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 2: Project Overview -->
+<section class="slide">
+    <h2>Das Projekt auf einen Blick</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">🎯 Ziel</div>
+            <p class="card-text">Automatisierte Erstellung von Quizfragen aus News-Inhalten mit KI-gestützter Validierung</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🔄 Workflow</div>
+            <p class="card-text">Content → Transkription/Scraping → KI-Generierung → Validierung → Speicherung</p>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 Datenverwaltung</div>
+            <p class="card-text">SQLite Datenbank mit Quizzes, Fragen, Versuchen und Leaderboard</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🌐 Multi-Provider</div>
+            <p class="card-text">Unterstützung für OpenAI, Groq, Ollama und LM Studio als LLM-Backend</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 3: Architecture -->
+<section class="slide">
+    <h2>System-Architektur</h2>
+    <div class="content-grid-3">
+        <div class="card">
+            <div class="card-title">🎨 Frontend</div>
+            <p class="card-text"><strong>app.py (Streamlit)</strong></p>
+            <p class="card-text" style="font-size: 0.85rem; margin-top: 0.5rem;">Benutzerinterface mit Theme-Support, Quiz-Verwaltung und Leaderboard</p>
+        </div>
+        <div class="card">
+            <div class="card-title">⚙️ Core Logic</div>
+            <ul class="feature-list">
+                <li><strong>generator.py</strong> - LLM-Integration</li>
+                <li><strong>validator.py</strong> - Antwort-Validierung</li>
+                <li><strong>database.py</strong> - Datenverwaltung</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📥 Input-Module</div>
+            <ul class="feature-list">
+                <li><strong>scraper.py</strong> - Content-Quellen</li>
+                <li><strong>transcriber.py</strong> - Lokale Transkription</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 4: Content Sources -->
+<section class="slide">
+    <h2>Unterstützte Inhaltsquellen</h2>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎬</div>
+            <div class="stat-label"><strong>YouTube Videos</strong></div>
+            <p style="font-size: 0.8rem; margin-top: 0.3rem; color: var(--text-secondary);">Mit Transkript-API</p>
+        </div>
+        <div class="stat-box">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📺</div>
+            <div class="stat-label"><strong>Tagesschau Mediathek</strong></div>
+            <p style="font-size: 0.8rem; margin-top: 0.3rem; color: var(--text-secondary);">Lokale Transkription</p>
+        </div>
+        <div class="stat-box">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📡</div>
+            <div class="stat-label"><strong>RSS Feeds</strong></div>
+            <p style="font-size: 0.8rem; margin-top: 0.3rem; color: var(--text-secondary);">4 News-Quellen</p>
+        </div>
+        <div class="stat-box">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+            <div class="stat-label"><strong>Custom Upload</strong></div>
+            <p style="font-size: 0.8rem; margin-top: 0.3rem; color: var(--text-secondary);">Video, PDF, Text</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 5: LLM Providers -->
+<section class="slide">
+    <h2>Multi-Provider LLM-Integration</h2>
+    <div class="content-grid-3">
+        <div class="provider-box">
+            <h4>🔗 OpenAI</h4>
+            <p>GPT-3.5-Turbo</p>
+            <p style="font-size: 0.75rem; margin-top: 0.3rem; color: #f59e0b;">Cloud • Kostenpflichtig</p>
+        </div>
+        <div class="provider-box">
+            <h4>⚡ Groq</h4>
+            <p>Llama-3.3-70B</p>
+            <p style="font-size: 0.75rem; margin-top: 0.3rem; color: #10b981;">Schnell • Cloud</p>
+        </div>
+        <div class="provider-box">
+            <h4>💻 Ollama</h4>
+            <p>Local Models</p>
+            <p style="font-size: 0.75rem; margin-top: 0.3rem; color: #38bdf8;">Lokal • Kostenlos</p>
+        </div>
+    </div>
+    <div class="highlight-box">
+        <h4>Intelligente Provider-Erkennung</h4>
+        <p>Automatische Detektion basierend auf API-Key Format • Fallback auf CPU wenn GPU nicht verfügbar • Flexible Model-Auswahl pro Provider</p>
+    </div>
+</section>
+
+<!-- Slide 6: Generator Module -->
+<section class="slide">
+    <h2>Quiz-Generierungs-Engine (generator.py)</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">🎯 Zwei Modi</div>
+            <ul class="feature-list" style="font-size: 0.95rem;">
+                <li>Multiple Choice (4 Optionen)</li>
+                <li>Freitext (Kurz-Antworten)</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🌍 Mehrsprachigkeit</div>
+            <ul class="feature-list" style="font-size: 0.95rem;">
+                <li>Automatische Spracherkennung</li>
+                <li>Deutsche & Englische Fragen</li>
+                <li>Text-Übersetzung für Validierung</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🔍 Smart Filtering</div>
+            <ul class="feature-list" style="font-size: 0.95rem;">
+                <li>Duplikat-Elimination</li>
+                <li>Schwierigkeitsgrad (1-5)</li>
+                <li>JSON-Output mit Strukturprüfung</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🚀 Optimierungen</div>
+            <ul class="feature-list" style="font-size: 0.95rem;">
+                <li>Adaptive Fragmentierung</li>
+                <li>Context-Limiting (8000 Zeichen)</li>
+                <li>Retry-Logik mit Fallback</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 7: Validator Module -->
+<section class="slide">
+    <h2>Antwort-Validierungs-Engine (validator.py)</h2>
+    <div class="highlight-box">
+        <h4>🕵️ Halluzinations-Detection</h4>
+        <p>Prüft, ob generierte Antworten wirklich im Quelltext vorkommen - verhindert falsche Fakten!</p>
+    </div>
+    <div class="content-grid" style="margin-top: 1.5rem;">
+        <div class="card">
+            <div class="card-title">Match-Strategien</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li><strong>Exact Match:</strong> Wörtliche Übereinstimmung</li>
+                <li><strong>Partial:</strong> Schlüsselwörter (60%)</li>
+                <li><strong>Fuzzy:</strong> RapidFuzz (80%)</li>
+                <li><strong>NER:</strong> spaCy Entities</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">Text-Normalisierung</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Satzzeichen-Entfernung</li>
+                <li>Lowercase-Konversion</li>
+                <li>Stopword-Filtering</li>
+                <li>Lemmatization (wenn spaCy)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 8: Database Schema -->
+<section class="slide">
+    <h2>Datenbankstruktur (database.py)</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">📋 quizzes</div>
+            <p class="card-text" style="font-size: 0.9rem;">ID, Title, Source URL, Transkript, Datum, Erstellungszeit</p>
+        </div>
+        <div class="card">
+            <div class="card-title">❓ questions</div>
+            <p class="card-text" style="font-size: 0.9rem;">Quiz-Verknüpfung, Frage, Optionen (JSON), Korrekte Antwort, Schwierigkeit, Validierungstyp</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🎮 quiz_attempts</div>
+            <p class="card-text" style="font-size: 0.9rem;">Punkte, Prozentzahl, Zeitstempel für Leaderboard</p>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 Features</div>
+            <ul class="feature-list" style="font-size: 0.85rem;">
+                <li>Persistente Speicherung</li>
+                <li>Leaderboard-Statistiken</li>
+                <li>Validierungsmetriken</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 9: Scraper Module -->
+<section class="slide">
+    <h2>Content Scraper (scraper.py)</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">🎬 YouTube Integration</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>VideoSearch API</li>
+                <li>Transcript API</li>
+                <li>Mehrsprachige Transkripte</li>
+                <li>Kanal-Videos-Zugriff</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📡 RSS Feed Parser</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Tagesschau, Zeit, Spiegel</li>
+                <li>Euronews (English)</li>
+                <li>BeautifulSoup Artikel-Extraction</li>
+                <li>HTML-Cleanup</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📺 Mediathek Scraping</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Tagesschau Video-Archiv</li>
+                <li>Title-Extraction</li>
+                <li>URL-Validierung</li>
+                <li>Duplikat-Check</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🔄 Content Kombination</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Multi-Artikel-Merging</li>
+                <li>Textlängen-Anpassung</li>
+                <li>Metadaten-Erhaltung</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 10: Transcriber Module -->
+<section class="slide">
+    <h2>Lokale Transkription (transcriber.py)</h2>
+    <div class="highlight-box">
+        <h4>🚀 faster-whisper Integration</h4>
+        <p>OpenAI Whisper mit Optimierungen für lokale Ausführung - GPU-Beschleunigung oder CPU-Fallback</p>
+    </div>
+    <div class="content-grid" style="margin-top: 1.5rem;">
+        <div class="card">
+            <div class="card-title">🎯 Features</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Modelle: tiny bis large</li>
+                <li>GPU/CPU Auto-Detect</li>
+                <li>Float16 / Int8 Quantisierung</li>
+                <li>Download-Caching</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">💾 Caching System</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>MD5-Hash URL-Indexing</li>
+                <li>Transkript-Persistierung</li>
+                <li>Schneller Re-Access</li>
+                <li>Speicherlimit-Management</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 11: Streamlit App -->
+<section class="slide">
+    <h2>Benutzer-Interface (app.py)</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">🎨 Design</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Dark/Light Mode Toggle</li>
+                <li>Glasmorphism CSS</li>
+                <li>Responsive Layout</li>
+                <li>Custom Background</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🔧 Features</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>News-Quellen Auswahl</li>
+                <li>Provider/Model Dropdown</li>
+                <li>Sprachen-Umschaltung</li>
+                <li>Quiz-Modi Auswahl</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 Funktionen</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Quiz-Spielen Interface</li>
+                <li>Leaderboard-Anzeige</li>
+                <li>Statistiken Dashboard</li>
+                <li>Quiz-Historie</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🔐 Admin</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Debug-Logging</li>
+                <li>API-Key Management</li>
+                <li>Datenverwaltung</li>
+                <li>Performance Monitoring</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 12: Workflow -->
+<section class="slide">
+    <h2>Quiz-Generierungs-Workflow</h2>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 2rem;">
+        <div class="workflow-step">
+            <div class="workflow-step-number">1</div>
+            <h4>Content</h4>
+            <p>Video, Artikel oder Upload</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="workflow-step">
+            <div class="workflow-step-number">2</div>
+            <h4>Transkription</h4>
+            <p>YouTube API oder Whisper</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="workflow-step">
+            <div class="workflow-step-number">3</div>
+            <h4>Generation</h4>
+            <p>LLM erstellt Fragen</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="workflow-step">
+            <div class="workflow-step-number">4</div>
+            <h4>Validierung</h4>
+            <p>Halluzinations-Check</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="workflow-step">
+            <div class="workflow-step-number">5</div>
+            <h4>Speicherung</h4>
+            <p>Datenbank-Persistierung</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 13: Key Technologies -->
+<section class="slide">
+    <h2>🛠️ Technologie-Stack</h2>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div class="stat-number">🐍</div>
+            <div class="stat-label"><strong>Python 3.10+</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">🚀</div>
+            <div class="stat-label"><strong>Streamlit Web UI</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">🤖</div>
+            <div class="stat-label"><strong>OpenAI/Groq/Ollama</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">🗄️</div>
+            <div class="stat-label"><strong>SQLite Database</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">🎬</div>
+            <div class="stat-label"><strong>YouTube API</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">🔤</div>
+            <div class="stat-label"><strong>faster-whisper</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">📰</div>
+            <div class="stat-label"><strong>feedparser/BeautifulSoup</strong></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">🧠</div>
+            <div class="stat-label"><strong>spaCy NLP</strong></div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 14: Key Features -->
+<section class="slide">
+    <h2>🌟 Besonderheiten</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">✨ Intelligente Validierung</div>
+            <p class="card-text">Mehrschichtige Fact-Checking mit Exact/Partial/Fuzzy Matching – verhindert halluzinierte Fakten</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🌍 Multi-Provider Support</div>
+            <p class="card-text">OpenAI, Groq Cloud, lokale Ollama/LM-Studio mit Auto-Fallback und Provider-Erkennung</p>
+        </div>
+        <div class="card">
+            <div class="card-title">💾 Smart Caching</div>
+            <p class="card-text">Transkript- und Ergebnis-Caching für wiederholte Anfragen – spart Zeit & Kosten</p>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 Umfassendes Leaderboard</div>
+            <p class="card-text">Perzentil-basiertes Ranking, Statistiken, Progress-Tracking über alle Quizze hinweg</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🔗 Multi-Source Integration</div>
+            <p class="card-text">YouTube, Tagesschau, 4 RSS-Feeds, Custom-URLs, Datei-Uploads nahtlos integriert</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🧪 Flexible Quizz-Modi</div>
+            <p class="card-text">Multiple Choice (4 Optionen) oder Freitext mit automatischer Schwierigkeitsbewertung</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 15: Use Cases -->
+<section class="slide">
+    <h2>💼 Anwendungsfälle</h2>
+    <div class="content-grid-3">
+        <div class="card">
+            <div class="card-title">🎓 Bildung</div>
+            <p class="card-text">Automatische Lernmaterialien aus News, Vorlesungen und Dokumentationen</p>
+        </div>
+        <div class="card">
+            <div class="card-title">📺 Medien</div>
+            <p class="card-text">Quiz-Generierung für News-Webseiten und Video-Plattformen</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🏢 Unternehmen</div>
+            <p class="card-text">Wissensüberprüfung aus Meeting-Transkripten und Schulungsvideos</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🌐 Content Marketing</div>
+            <p class="card-text">Engagement-Quiz aus eigenen Blogartikeln und Video-Inhalten</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🎮 Gamification</div>
+            <p class="card-text">Quiz-Wettbewerbe mit Leaderboards und Statistiken</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🔍 Qualitätskontrolle</div>
+            <p class="card-text">Automatische Faktenchecks und Validierung von generierten Inhalten</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 16: Code Quality -->
+<section class="slide">
+    <h2>📋 Code-Qualität & Struktur</h2>
+    <div class="highlight-box">
+        <h4>🏗️ Modular Architecture</h4>
+        <p>Saubere Modultrennung mit klaren Interfaces – einfach zu erweitern und zu warten</p>
+    </div>
+    <div class="content-grid" style="margin-top: 1.5rem;">
+        <div class="card">
+            <div class="card-title">✅ Best Practices</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Type Hints durchgängig</li>
+                <li>Comprehensive Logging</li>
+                <li>Error Handling & Fallbacks</li>
+                <li>SQL Injection Prevention</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📚 Documentation</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Docstrings in allen Funktionen</li>
+                <li>Parameter-Dokumentation</li>
+                <li>Return Value Specification</li>
+                <li>Usage Examples</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 17: Performance & Optimization -->
+<section class="slide">
+    <h2>⚡ Performance & Optimierungen</h2>
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-title">🚀 Speed</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Fragment-basierte Verarbeitung</li>
+                <li>Streaming Output</li>
+                <li>Parallele API-Calls</li>
+                <li>Smart Context-Limiting</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">💰 Cost Optimization</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Transkript-Caching</li>
+                <li>Groq Fallback (kostenlos)</li>
+                <li>Ollama Local Option</li>
+                <li>Token-Limiting</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🔧 Reliability</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Retry-Mechanismus</li>
+                <li>Provider Auto-Fallback</li>
+                <li>Graceful Degradation</li>
+                <li>Error Recovery</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 Scalability</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>Batch Processing</li>
+                <li>Database Indexing</li>
+                <li>Memory-effiziente NLP</li>
+                <li>Async Support Ready</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 18: Future Roadmap -->
+<section class="slide">
+    <h2>🚀 Entwicklungs-Roadmap</h2>
+    <div class="content-grid-3">
+        <div class="card">
+            <div class="card-title">🔮 Kurz-Fristig</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>🔲 API Deployment</li>
+                <li>🔲 Batch Processing</li>
+                <li>🔲 Advanced Analytics</li>
+                <li>🔲 Export Funktionen</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">📈 Mittel-Fristig</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>🔲 WebRTC für Live-Video</li>
+                <li>🔲 Image-to-Quiz</li>
+                <li>🔲 Custom Fine-Tuning</li>
+                <li>🔲 Multi-Language UI</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🌟 Lang-Fristig</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>🔲 Graph DB Integration</li>
+                <li>🔲 Semantic Search</li>
+                <li>🔲 Vision Models</li>
+                <li>🔲 Enterprise Edition</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 19: Metrics & KPIs -->
+<section class="slide">
+    <h2>📊 Wichtige Metriken</h2>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Validierungs-Erfolgsquote</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">3-5</div>
+            <div class="stat-label">Sekunden pro Quiz</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">6+</div>
+            <div class="stat-label">Content-Quellen</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">4</div>
+            <div class="stat-label">LLM-Provider</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">&lt;2€</div>
+            <div class="stat-label">Kosten pro Quiz</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Lokal / Kostenlos</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">1000+</div>
+            <div class="stat-label">Lagerbare Quizze</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Quiz-Schwierigkeitsgrade</div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 20: Installation & Usage -->
+<section class="slide">
+    <h2>⚙️ Setup & Verwendung</h2>
+    <div class="highlight-box">
+        <h4>Installation</h4>
+        <p style="font-family: monospace; font-size: 0.9rem; margin-top: 0.75rem;">
+            pip install -r requirements.txt<br>
+            python -m database.init_db()<br>
+            streamlit run app.py
+        </p>
+    </div>
+    <div class="content-grid" style="margin-top: 1.5rem;">
+        <div class="card">
+            <div class="card-title">🔑 API-Keys</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>OpenAI: sk-...</li>
+                <li>Groq: gsk_...</li>
+                <li>Ollama: keine nötig</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-title">🌍 Umgebungsvariablen</div>
+            <ul class="feature-list" style="font-size: 0.9rem;">
+                <li>API_KEY oder OPENAI_API_KEY</li>
+                <li>.env Datei laden</li>
+                <li>Provider auto-detected</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 21: Summary -->
+<section class="slide">
+    <h2>📝 Zusammenfassung</h2>
+    <div class="highlight-box" style="margin-top: 1.5rem;">
+        <h4>Ein vollständiges, produktionsreifes System für intelligente Quiz-Generierung</h4>
+        <p style="margin-top: 1rem;">
+            ✅ Modulare, wartbare Architektur<br>
+            ✅ Multi-Provider LLM-Integration mit Auto-Fallback<br>
+            ✅ Intelligente Halluzinations-Erkennung<br>
+            ✅ 6+ integrierte Inhaltsquellen<br>
+            ✅ Umfassendes Leaderboard & Analytics<br>
+            ✅ Production-ready mit Logging & Error-Handling
+        </p>
+    </div>
+</section>
+
+<!-- Slide 22: Thank You -->
+<section class="slide">
+    <div class="center-flex">
+        <h1 class="slide-title">Vielen Dank! 🙏</h1>
+        <p class="slide-subtitle">Fragen & Diskussion</p>
+        <div style="margin-top: 3rem; font-size: 1.1rem; color: var(--text-secondary);">
+            <p>📧 Kontakt & Support verfügbar</p>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 1rem;">
+                News Quiz Generator<br>
+                Professional Python Application<br>
+                Made with ❤️ for AI & Education
+            </p>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

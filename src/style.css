@@ -1,0 +1,244 @@
+/* CSS Variables für Theming */
+:root {
+    --bg-overlay: rgba(30, 40, 60, 0.6);
+    --bg-overlay-2: rgba(20, 30, 50, 0.7);
+    --sidebar-bg: rgba(255, 255, 255, 0.92);
+    --main-bg: rgba(255, 255, 255, 0.95);
+    --text-primary: #2c3e50;
+    --text-secondary: #1a1a2e;
+    --border-color: rgba(200, 200, 200, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Mode Override Klasse via Python injiziert */
+.dark-mode {
+    --bg-overlay: rgba(30, 40, 60, 0.8);
+    --bg-overlay-2: rgba(10, 15, 30, 0.9);
+    --sidebar-bg: rgba(20, 25, 40, 0.85);
+    --main-bg: rgba(30, 35, 50, 0.85);
+    --text-primary: #e0e0e0;
+    --text-secondary: #ffffff;
+    --border-color: rgba(100, 100, 100, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Hintergrundbild mit abgedunkeltem Overlay */
+.stApp {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* Gradient wird in Python gesetzt, nutzt aber keine Variablen hier direkt */
+}
+
+/* Glasmorphismus-Overlay für Hauptinhalt */
+.stApp>header {
+    background: transparent !important;
+}
+
+/* Sidebar mit besserem Kontrast */
+section[data-testid="stSidebar"] {
+    background: var(--sidebar-bg) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-right: 1px solid var(--border-color) !important;
+}
+
+/* Sidebar Text gut lesbar - alle Elemente */
+section[data-testid="stSidebar"] .stMarkdown,
+section[data-testid="stSidebar"] .stMarkdown p,
+section[data-testid="stSidebar"] .stMarkdown span,
+section[data-testid="stSidebar"] .stSelectbox label,
+section[data-testid="stSidebar"] .stSelectbox div,
+section[data-testid="stSidebar"] .stSelectbox span,
+section[data-testid="stSidebar"] .stTextInput label,
+section[data-testid="stSidebar"] .stTextInput div,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"] p,
+section[data-testid="stSidebar"] [data-baseweb="select"] span {
+    color: var(--text-primary) !important;
+}
+
+/* Sidebar Header */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] .stHeadingContainer {
+    color: var(--text-secondary) !important;
+}
+
+/* Selectbox und Dropdown Text lesbar */
+section[data-testid="stSidebar"] [data-baseweb="select"] {
+    background: var(--main-bg) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+section[data-testid="stSidebar"] [data-baseweb="select"] * {
+    color: var(--text-primary) !important;
+}
+
+/* Info/Warning/Error Boxen in Sidebar besser lesbar */
+section[data-testid="stSidebar"] .stAlert {
+    background: var(--main-bg) !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+section[data-testid="stSidebar"] .stAlert p,
+section[data-testid="stSidebar"] .stAlert span {
+    color: var(--text-primary) !important;
+    font-weight: 500 !important;
+}
+
+/* Glaseffekt für Hauptinhalt */
+.main .block-container {
+    background: var(--main-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-radius: 24px !important;
+    padding: 2rem 3rem !important;
+    margin-top: 1rem !important;
+    box-shadow: 0 10px 40px var(--shadow-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Button-Styling */
+.stButton>button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+}
+
+.stButton>button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+}
+
+/* Primärer Button-Stil */
+.stButton>button[kind="primary"] {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+    box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4) !important;
+}
+
+.stButton>button[kind="primary"]:hover {
+    box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6) !important;
+}
+
+/* Formular-Styling */
+.stForm {
+    background: var(--main-bg) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Alle Texte im Formular dunkel */
+.stForm p,
+.stForm span,
+.stForm label,
+.stForm div {
+    color: var(--text-primary) !important;
+}
+
+/* Radio-Buttons */
+.stRadio>div {
+    background: transparent !important;
+    padding: 0.5rem !important;
+}
+
+/* Radio-Button Text dunkel */
+.stRadio label,
+.stRadio span,
+.stRadio p {
+    color: var(--text-primary) !important;
+}
+
+/* Erfolgs-/Fehlermeldungen im Hauptbereich */
+.main .stAlert {
+    background: var(--main-bg) !important;
+    backdrop-filter: blur(8px) !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.main .stAlert p,
+.main .stAlert span,
+.main .stAlert div {
+    color: var(--text-primary) !important;
+}
+
+/* Titel-Styling im Hauptbereich */
+.main h1,
+.main .stHeadingContainer h1 {
+    color: var(--text-secondary) !important;
+    text-shadow: none !important;
+}
+
+/* Alle Texte im Hauptbereich dunkel */
+.main p,
+.main span,
+.main label,
+.main div {
+    color: var(--text-primary) !important;
+}
+
+/* Untertitel-Styling */
+.main h2,
+.main h3 {
+    color: var(--text-secondary) !important;
+    margin-top: 1rem !important;
+}
+
+/* Input-Felder besser lesbar */
+.stTextInput input {
+    background: var(--main-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+}
+
+.stSelectbox>div>div {
+    background: var(--main-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+}
+
+/* Custom Loader Animation */
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.33);
+    }
+
+    80%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes pulse-dot {
+    0% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.8);
+    }
+}
+
+.stStatus {
+    border: 1px solid var(--border-color) !important;
+    background: var(--main-bg) !important;
+}

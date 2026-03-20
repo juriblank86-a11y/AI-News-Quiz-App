@@ -1,0 +1,18 @@
+youtube-transcript-api
+youtube-search-python
+httpx<0.28.0
+openai
+streamlit
+python-dotenv
+feedparser
+beautifulsoup4
+requests
+faster-whisper
+yt-dlp
+PyMuPDF
+python-docx
+
+# Optional: Für verbesserte Validierung (nicht zwingend erforderlich)
+rapidfuzz
+spacy
+# Nach Installation: python -m spacy download de_core_news_sm
